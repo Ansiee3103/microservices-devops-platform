@@ -1,0 +1,21 @@
+pipeline {
+
+  agent any
+
+  stages {
+
+    stage('Checkout') {
+      steps {
+        git 'https://github.com/Ansiee3103/microservices-devops-platform.git'
+      }
+    }
+
+    stage('Build Docker Image') {
+      steps {
+        sh 'docker build -t auth-service ./services/auth-service'
+      }
+    }
+
+  }
+
+}

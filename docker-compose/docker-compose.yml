@@ -1,0 +1,23 @@
+version: "3"
+
+services:
+
+  auth-service:
+    build: ../services/auth-service
+    ports:
+      - "3000:3000"
+
+  product-service:
+    build: ../services/product-service
+    ports:
+      - "3001:3001"
+
+  order-service:
+    build: ../services/order-service
+    ports:
+      - "3002:3002"
+
+  frontend:
+    build: ../services/frontend
+    ports:
+      - "8080:80"
