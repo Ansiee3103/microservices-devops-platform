@@ -2,40 +2,37 @@ pipeline {
     agent any
 
     environment {
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub-creds')
         DOCKER_USER = "ansiee"
     }
 
     stages {
 
-        stage('Clone Repository') {
+        stage('Clone Repo') {
             steps {
                 git 'https://github.com/Ansiee3103/microservices-devops-platform.git'
             }
         }
 
-        stage('Build Auth Service') {
+        stage('Build Images') {
             steps {
-                sh 'docker build -t $DOCKER_USER/auth-service:v2 ./services/auth-service'
+                sh 'docker build -t $DOCKER_USER/auth-service:latest ./services/auth-service'
+                sh 'docker build -t $DOCKER_USER/product-service:latest ./services/product-service'
+                sh 'docker build -t $DOCKER_USER/order-service:latest ./services/order-service'
             }
         }
 
-        stage('Build Product Service') {
+        stage('Docker Login') {
             steps {
-                sh 'docker build -t $DOCKER_USER/product-service:v2 ./services/product-service'
-            }
-        }
-
-        stage('Build Order Service') {
-            steps {
-                sh 'docker build -t $DOCKER_USER/order-service:v2 ./services/order-service'
+                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
             }
         }
 
         stage('Push Images') {
             steps {
-                sh 'docker push $DOCKER_USER/auth-service:v2'
-                sh 'docker push $DOCKER_USER/product-service:v2'
-                sh 'docker push $DOCKER_USER/order-service:v2'
+                sh 'docker push $DOCKER_USER/auth-service:latest'
+                sh 'docker push $DOCKER_USER/product-service:latest'
+                sh 'docker push $DOCKER_USER/order-service:latest'
             }
         }
     }
