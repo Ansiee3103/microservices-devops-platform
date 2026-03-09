@@ -1,0 +1,11 @@
+FROM jenkins/jenkins:lts
+
+USER root
+
+# Copy docker CLI from official docker image
+COPY --from=docker:24.0.7-cli /usr/local/bin/docker /usr/local/bin/docker
+
+# Create docker group if it doesn't exist
+RUN groupadd -f docker
+
+USER jenkins
