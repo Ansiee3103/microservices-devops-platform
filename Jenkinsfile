@@ -8,12 +8,6 @@ pipeline {
 
     stages {
 
-        stage('Clone Repo') {
-            steps {
-                git 'https://github.com/Ansiee3103/microservices-devops-platform.git'
-            }
-        }
-
         stage('Build Images') {
             steps {
                 sh 'docker build -t $DOCKER_USER/auth-service:latest ./services/auth-service'
