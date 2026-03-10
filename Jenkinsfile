@@ -25,6 +25,15 @@ pipeline {
         }
     }
 }
+        stage('Trivy Security Scan') {
+    steps {
+        sh '''
+        trivy image ansiee/auth-service:latest
+        trivy image ansiee/product-service:latest
+        trivy image ansiee/order-service:latest
+        '''
+    }
+}
 
         stage('Build Images') {
             steps {
