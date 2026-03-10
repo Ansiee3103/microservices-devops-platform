@@ -9,19 +9,19 @@ pipeline {
     stages {
 
         stage('SonarQube Scan') {
-            steps {
-                withSonarQubeEnv('SonarQube') {
-                sh '''
-                docker run --rm \
-                --network=host \
-                -e SONAR_HOST_URL=http://localhost:9000 \
-                -e SONAR_LOGIN=$SONAR_AUTH_TOKEN \
-                -v $(pwd):/usr/src \
-                sonarsource/sonar-scanner-cli
-                '''
-                }
-            }
+    steps {
+        withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
+            sh '''
+            docker run --rm \
+            --network=host \
+            -e SONAR_HOST_URL=http://localhost:9000 \
+            -e SONAR_LOGIN=$SONAR_TOKEN \
+            -v $(pwd):/usr/src \
+            sonarsource/sonar-scanner-cli
+            '''
         }
+    }
+}
 
         stage('Build Images') {
             steps {
