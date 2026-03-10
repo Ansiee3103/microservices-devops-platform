@@ -17,7 +17,10 @@ pipeline {
             -e SONAR_HOST_URL=http://localhost:9000 \
             -e SONAR_LOGIN=$SONAR_TOKEN \
             -v $(pwd):/usr/src \
-            sonarsource/sonar-scanner-cli
+            sonarsource/sonar-scanner-cli \
+            -Dsonar.projectKey=microservices-devops \
+            -Dsonar.projectName="microservices-devops" \
+            -Dsonar.sources=.
             '''
         }
     }
