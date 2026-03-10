@@ -9,7 +9,7 @@ pipeline {
     stages {
 
         stage('Build Images') {
-            steps {
+            stgit eps {
                 sh 'docker build -t $DOCKER_USER/auth-service:latest ./services/auth-service'
                 sh 'docker build -t $DOCKER_USER/product-service:latest ./services/product-service'
                 sh 'docker build -t $DOCKER_USER/order-service:latest ./services/order-service'
@@ -29,5 +29,18 @@ pipeline {
                 sh 'docker push $DOCKER_USER/order-service:latest'
             }
         }
+        stage('SonarQube Scan') {
+    steps {
+        withSonarQubeEnv('SonarQube') {
+            sh '''
+            docker run --rm \
+            -e SONAR_HOST_URL=http://host.docker.internal:9000 \
+            -e SONAR_LOGIN=$SONAR_AUTH_TOKEN \
+            -v $(pwd):/usr/src \
+            sonarsource/sonar-scanner-cli
+            '''
+        }
+    }
+}
     }
 }
