@@ -14,12 +14,12 @@ pipeline {
             sh '''
             docker run --rm \
             --network=host \
-            -e SONAR_HOST_URL=http://localhost:9000 \
-            -e SONAR_LOGIN=$SONAR_TOKEN \
             -v $(pwd):/usr/src \
             sonarsource/sonar-scanner-cli \
+            -Dsonar.host.url=http://localhost:9000 \
+            -Dsonar.login=$SONAR_TOKEN \
             -Dsonar.projectKey=microservices-devops \
-            -Dsonar.projectName="microservices-devops" \
+            -Dsonar.projectName=microservices-devops \
             -Dsonar.sources=.
             '''
         }
