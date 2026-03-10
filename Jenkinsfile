@@ -23,7 +23,7 @@ pipeline {
         }
 
         stage('Build Images') {
-            stgit eps {
+            steps {
                 sh 'docker build -t $DOCKER_USER/auth-service:latest ./services/auth-service'
                 sh 'docker build -t $DOCKER_USER/product-service:latest ./services/product-service'
                 sh 'docker build -t $DOCKER_USER/order-service:latest ./services/order-service'
