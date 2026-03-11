@@ -28,9 +28,17 @@ pipeline {
         stage('Trivy Security Scan') {
     steps {
         sh '''
-        trivy image ansiee/auth-service:latest
-        trivy image ansiee/product-service:latest
-        trivy image ansiee/order-service:latest
+        docker run --rm \
+        -v /var/run/docker.sock:/var/run/docker.sock \
+        aquasec/trivy image ansiee/auth-service:latest
+
+        docker run --rm \
+        -v /var/run/docker.sock:/var/run/docker.sock \
+        aquasec/trivy image ansiee/product-service:latest
+
+        docker run --rm \
+        -v /var/run/docker.sock:/var/run/docker.sock \
+        aquasec/trivy image ansiee/order-service:latest
         '''
     }
 }
