@@ -29,14 +29,20 @@ pipeline {
     steps {
         sh '''
         docker run --rm \
+        --dns 8.8.8.8 \
+        --dns 8.8.4.4 \
         -v /var/run/docker.sock:/var/run/docker.sock \
         aquasec/trivy image ansiee/auth-service:latest
 
         docker run --rm \
+        --dns 8.8.8.8 \
+        --dns 8.8.4.4 \
         -v /var/run/docker.sock:/var/run/docker.sock \
         aquasec/trivy image ansiee/product-service:latest
 
         docker run --rm \
+        --dns 8.8.8.8 \
+        --dns 8.8.4.4 \
         -v /var/run/docker.sock:/var/run/docker.sock \
         aquasec/trivy image ansiee/order-service:latest
         '''
